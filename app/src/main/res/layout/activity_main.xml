@@ -47,46 +47,30 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <!-- Email TextInputLayout -->
-        <com.google.android.material.textfield.TextInputLayout
+        <!-- Email EditText -->
+        <EditText
+            android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            app:errorEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextColor="@color/black"
-            app:passwordToggleEnabled="false">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black" />
 
         <!-- Password EditText -->
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            app:errorEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextColor="@color/black"
-            app:passwordToggleDrawable="@drawable/baseline_remove_red_eye_24"
-            app:passwordToggleEnabled="true">
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="@color/black" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
 
 
         <!-- LinearLayout for Checkbox and "Quên mật khẩu" TextView -->
