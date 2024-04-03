@@ -2,6 +2,7 @@ package com.example.node_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -9,58 +10,93 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText txtMail;
     private EditText txtPass;
+    private ImageButton loginButton;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        apiService = ApiClient.getApiClient().create(ApiService.class);
+
         txtMail = findViewById(R.id.editTextEmail);
         txtPass = findViewById(R.id.editTextPassword);
         ImageButton loginButton = findViewById(R.id.submit_button1);
         ImageButton submitButton = findViewById(R.id.submit_button2);
 
+        login1();
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                checkLogin();
+//            }
+//        });
+//
+//        submitButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Handle other button clicks or remove this listener if not needed
+//            }
+//        });
+    }
+    private void login1(){
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                checkLogin();
+            public void onClick(View v) {
+                User user = new User();
+                String username =txtMail.getText().toString().trim();
+                String password =txtPass.getText().toString().trim();
+                user.setName(username);
+                user.setPasswd(password);
+                apiService.login(user).enqueue();
             }
         });
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                startActivity(new Intent(MainActivity.this, Home.class));
-            }
-        });
     }
 
-    private void checkLogin() {
-        String strUsername = txtMail.getText().toString().trim();
-        String strPass = txtPass.getText().toString().trim();
+//    private void checkLogin() {
+//        String strUsername = txtMail.getText().toString().trim();
+//        String strPass = txtPass.getText().toString().trim();
+//
+//        // Perform validation
+//        if (strUsername.isEmpty() || strPass.isEmpty()) {
+//            Toast.makeText(MainActivity.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        // Call login API
+//        User user = new User("", strUsername, strPass); // You may adjust this according to your API requirements
+//        Call<User> call = apiService.login(user);
+//        call.enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//                if (response.isSuccessful()) {
+//                    // Login successful, navigate to home or do whatever needed
+//                    Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(MainActivity.this, home.class));
+//                } else {
+//                    // Login failed
+//                    Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//                // API call failed, handle error
+//                Toast.makeText(MainActivity.this, "Login failed. Please try again later.", Toast.LENGTH_SHORT).show();
+//                Log.e("Login Error", "Failed to login", t); // Log the error for debugging
+//            }
+//        });
+//    }
 
-        // Thực hiện validation
-        if (strUsername.isEmpty() || strPass.isEmpty()) {
-            Toast.makeText(MainActivity.this, "Vui lòng nhập cả tên đăng nhập và mật khẩu", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Thực hiện kiểm tra đăng nhập
-        // Ở đây bạn có thể thêm logic kiểm tra đăng nhập dựa trên thông tin từ EditText
-        // Ví dụ: so sánh với giá trị mặc định hoặc gọi API kiểm tra đăng nhập
-
-        // Ví dụ đơn giản: so sánh với giá trị mặc định
-        if (strUsername.equals("admin") && strPass.equals("admin123")) {
-            // Đăng nhập thành công
-            Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(MainActivity.this, home.class));
-        } else {
-            // Đăng nhập không thành công
-            Toast.makeText(MainActivity.this, "Tên đăng nhập hoặc mật khẩu không hợp lệ", Toast.LENGTH_SHORT).show();
-        }
-    }
 }
