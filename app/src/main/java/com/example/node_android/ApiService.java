@@ -17,12 +17,12 @@ public interface ApiService {
             .create();
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.96:3000/")
+            .baseUrl("http://192.168.6.59:3000/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
 
-    @GET("uses/login")
+    @GET("users/login")
     Call<List<User>> getListUsers();
 
 }
