@@ -30,10 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
         txtMail = findViewById(R.id.editTextEmail);
         txtPass = findViewById(R.id.editTextPassword);
-        ImageButton loginButton = findViewById(R.id.submit_button1);
+        loginButton = findViewById(R.id.submit_button1);
         ImageButton submitButton = findViewById(R.id.submit_button2);
 
         login1();
+
 //        loginButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -48,55 +49,38 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
     }
-    private void login1(){
+
+    private void login1() {
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User user = new User();
-                String username =txtMail.getText().toString().trim();
-                String password =txtPass.getText().toString().trim();
+                String username = txtMail.getText().toString().trim();
+                String password = txtPass.getText().toString().trim();
                 user.setName(username);
                 user.setPasswd(password);
-                apiService.login(user).enqueue();
+                apiService.login(user).enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if (response.isSuccessful()) {
+                            // Login successful, navigate to home or do whatever needed
+                            Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(MainActivity.this, home.class));
+                        } else {
+                            // Login failed
+                            Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        // API call failed, handle error
+                        Toast.makeText(MainActivity.this, "Login failed. Please try again later.", Toast.LENGTH_SHORT).show();
+                        Log.e("Login Error", "Failed to login", t); // Log the error for debugging
+                    }
+                });
             }
         });
-
     }
-
-//    private void checkLogin() {
-//        String strUsername = txtMail.getText().toString().trim();
-//        String strPass = txtPass.getText().toString().trim();
-//
-//        // Perform validation
-//        if (strUsername.isEmpty() || strPass.isEmpty()) {
-//            Toast.makeText(MainActivity.this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        // Call login API
-//        User user = new User("", strUsername, strPass); // You may adjust this according to your API requirements
-//        Call<User> call = apiService.login(user);
-//        call.enqueue(new Callback<User>() {
-//            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
-//                if (response.isSuccessful()) {
-//                    // Login successful, navigate to home or do whatever needed
-//                    Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-//                    startActivity(new Intent(MainActivity.this, home.class));
-//                } else {
-//                    // Login failed
-//                    Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
-//                // API call failed, handle error
-//                Toast.makeText(MainActivity.this, "Login failed. Please try again later.", Toast.LENGTH_SHORT).show();
-//                Log.e("Login Error", "Failed to login", t); // Log the error for debugging
-//            }
-//        });
-//    }
-
 }
